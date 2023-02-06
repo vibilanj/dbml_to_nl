@@ -1,0 +1,140 @@
+The Users table contains the following columns:
+- 'users_email_address' of type 'varchar' which acts as the primary key
+- 'password' of type 'varchar'
+- 'userRunLevel' of type 'int'
+- 'staff_id' of type 'int' which acts as a foreign key (optional)
+- 'client_id' of type 'int' which acts as a foreign key (optional)
+
+The Vehicle table contains the following columns:
+- 'vehicle_registration_number' of type 'varchar' which acts as the primary key
+- 'vehicle_model' of type 'varchar'
+- 'vehicle_make' of type 'varchar'
+- 'vehicle_type' of type 'varchar'
+- 'engine_size' of type 'int'
+- 'capacity' of type 'int'
+- 'mileage' of type 'int'
+- 'MOT_test_date' of type 'datetime'
+- 'hire_rate' of type 'float'
+- 'outlet_id' of type 'int' which acts as a foreign key
+- 'isRented' of type 'bit'
+- 'isActive' of type 'bit' (in case unserviceable)
+
+The Outlet table contains the following columns:
+- 'outlet_id' of type 'int' which acts as the primary key
+- 'location' of type 'varchar'
+- 'telephone_number' of type 'varchar'
+- 'fax_number' of type 'varchar'
+- 'manager_id' of type 'int' which acts as a foreign key
+
+The Staff table contains the following columns:
+- 'staff_id' of type 'int' which acts as the primary key
+- 'fst_name' of type 'varchar'
+- 'lst_name' of type 'varchar'
+- 'home_address' of type 'varchar'
+- 'home_phone_number' of type 'varchar'
+- 'birthdate' of type 'datetime'
+- 'sex' of type 'varchar'
+- 'national_insurance_number' of type 'int'
+- 'date_joined' of type 'datetime'
+- 'job_title' of type 'varchar'
+- 'salary' of type 'float'
+- 'outlet_id' of type 'int' which acts as a foreign key
+
+The Client table contains the following columns:
+- 'client_id' of type 'int' which acts as the primary key
+- 'isBusiness' of type 'bit'
+- 'business_profile_id' of type 'int' which acts as a foreign key (this should be optional)
+- 'personal_profile_id' of type 'int' which acts as a foreign key
+
+The Personal_Profile table contains the following columns:
+- 'personal_profile_id' of type 'int' which acts as the primary key
+- 'fst_name' of type 'varchar'
+- 'lst_name' of type 'varchar'
+- 'telephone_number' of type 'varchar'
+- 'home_address' of type 'varchar'
+- 'birthdate' of type 'datetime'
+- 'driving_license_number' of type 'varchar'
+
+The Business_Profile table contains the following columns:
+- 'business_profile_id' of type 'int' which acts as the primary key
+- 'business_name' of type 'varchar'
+- 'business_type' of type 'varchar'
+- 'address' of type 'varchar'
+- 'telephone_number' of type 'varchar' (consider intermediary table for multiple phone and fax numbers)
+- 'fax_number' of type 'varchar'
+
+The Hire_Agreement table contains the following columns:
+- 'hire_agreement_id' of type 'int' which acts as the primary key
+- 'rental_cost' of type 'float'
+- 'vehicle_registration_number' of type 'varchar' which acts as a foreign key
+- 'client_id' of type 'int' which acts as a foreign key
+- 'date_start' of type 'datetime'
+- 'date_end' of type 'datetime'
+- 'fault_report_id' of type 'int' which acts as a foreign key
+
+The Fault_Report table contains the following columns:
+- 'fault_report_id' of type 'int' which acts as the primary key
+- 'vehicle_registration_number' of type 'varchar' which acts as a foreign key
+- 'staff_id' of type 'int' which acts as a foreign key
+- 'comments' of type 'varchar'
+- 'isFound' of type 'bit'
+
+The Fine table contains the following columns:
+- 'fine_id' of type 'int' which acts as the primary key
+- 'vehicle_registration_number' of type 'varchar' which acts as a foreign key
+- 'amount' of type 'float'
+- 'type' of type 'varchar'
+- 'client_id' of type 'int' which acts as a foreign key
+- 'date' of type 'datetime'
+- 'isPaid' of type 'bit'
+- 'transaction_id' of type 'int'
+
+The Transaction table contains the following columns:
+- 'transaction_id' of type 'int' which acts as the primary key
+- 'client_id' of type 'int' which acts as a foreign key
+- 'amount' of type 'float'
+- 'isFine' of type 'bit' (agreement or fine)
+- 'hire_agreement_id' of type 'int' which acts as a foreign key
+- 'fine_id' of type 'int' which acts as a foreign key
+
+The Accident table contains the following columns:
+- 'accident_id' of type 'int' which acts as the primary key
+- 'client_id' of type 'int' which acts as a foreign key
+- 'staff_id' of type 'int' which acts as a foreign key
+- 'vehicle_registration_number' of type 'varchar' which acts as a foreign key
+- 'repair_id' of type 'int' which acts as a foreign key
+- 'insurance_claim_id' of type 'int'
+- 'location' of type 'varchar'
+- 'comments' of type 'varchar'
+
+The Insurance_Claim table contains the following columns:
+- 'insurance_claim_id' of type 'int' which acts as the primary key
+- 'client_id' of type 'int' which acts as a foreign key
+- 'insurance_account_id' of type 'int' which acts as a foreign key
+
+The Insurance_Account table contains the following columns:
+- 'insurance_account_id' of type 'int' which acts as the primary key
+- 'client_id' of type 'int' which acts as a foreign key
+- 'premium' of type 'float'
+- 'deductible' of type 'float'
+
+The Repair table contains the following columns:
+- 'repair_id' of type 'int' which acts as the primary key
+- 'staff_id' of type 'int' which acts as a foreign key
+- 'client_id' of type 'int' which acts as a foreign key
+- 'hire_agreement_id' of type 'int' which acts as a foreign key
+- 'vehicle_registration_number' of type 'varchar' which acts as a foreign key
+- 'fault_report_id' of type 'int' which acts as a foreign key
+- 'comments' of type 'varchar'
+- 'amount' of type 'float'
+- 'insurance_claim_id' of type 'int' which acts as a foreign key
+
+The Maintenance table contains the following columns:
+- 'maintenance_id' of type 'int' which acts as the primary key
+- 'staff_id' of type 'int' which acts as a foreign key
+- 'client' of type 'int' which acts as a foreign key
+- 'vehicle_registration_number' of type 'varchar' which acts as a foreign key
+- 'comments' of type 'varchar'
+- 'amount' of type 'float' (never in debt)
+
+

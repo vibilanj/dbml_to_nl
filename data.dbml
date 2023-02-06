@@ -1,0 +1,155 @@
+Table users{
+  users_email_address varchar [pk]
+  password varchar  
+  userRunLevel int
+  staff_id int [ref: - staff.staff_id] //optional
+  client_id int [ref: - client.client_id] //optional
+}
+
+Table vehicle {
+  vehicle_registration_number varchar [pk]
+  vehicle_model varchar 
+  vehicle_make varchar
+  vehicle_type varchar
+  engine_size int
+  capacity int
+  mileage int
+  MOT_test_date datetime
+  hire_rate float
+  outlet_id int [ref: > outlet.outlet_id]
+  isRented bit
+  isActive bit // in case unserviceable
+}
+
+Table outlet{
+  outlet_id int [pk]
+  location varchar
+  telephone_number varchar
+  fax_number varchar
+  manager_id int [ref: - staff.staff_id]
+} 
+
+Table staff{
+  staff_id int [pk]
+  fst_name varchar
+  lst_name varchar
+  home_address varchar
+  home_phone_number varchar
+  birthdate datetime
+  sex varchar
+  national_insurance_number int
+  date_joined datetime
+  job_title varchar
+  salary float
+  outlet_id int [ref: > outlet.outlet_id]
+}
+
+Table client{
+  client_id int [pk]
+  isBusiness bit
+  business_profile_id int [ref: - business_profile.business_profile_id]//this should be optional
+  personal_profile_id int [ref: - personal_profile.personal_profile_id]
+}
+
+Table personal_profile{
+  personal_profile_id int [pk]
+  fst_name varchar
+  lst_name varchar
+  telephone_number varchar
+  home_address varchar
+  birthdate datetime
+  driving_license_number varchar
+}
+
+Table business_profile{
+  business_profile_id int [pk]
+  business_name varchar
+  business_type varchar
+  address varchar
+  telephone_number varchar //consider intermediary table for multiple phone and fax numbers
+  fax_number varchar
+}
+
+Table hire_agreement{
+  hire_agreement_id int [pk]
+  rental_cost float
+  vehicle_registration_number varchar [ref: > vehicle.vehicle_registration_number]
+  client_id int [ref: > client.client_id]
+  date_start datetime
+  date_end datetime
+  fault_report_id int [ref: - fault_report.fault_report_id]
+}
+
+Table fault_report{
+  fault_report_id int [pk]
+  vehicle_registration_number varchar [ref: > vehicle.vehicle_registration_number]
+  staff_id int [ref: > staff.staff_id]
+  comments varchar
+  isFound bit
+}
+
+Table fine{
+  fine_id int [pk]
+  vehicle_registration_number varchar [ref: > vehicle.vehicle_registration_number]
+  amount float
+  type varchar
+  client_id int [ref: > client.client_id]
+  date datetime
+  isPaid bit
+  transaction_id int 
+}
+
+Table transaction{
+  transaction_id int [pk]
+  client_id int [ref: > client.client_id]
+  amount float
+  isFine bit // agreement or fine
+  hire_agreement_id int [ref: > hire_agreement.hire_agreement_id]
+  fine_id int [ref: > fine.fine_id]
+}
+
+Table accident{
+  accident_id int [pk]
+  client_id int [ref: > client.client_id]
+  staff_id int [ref: > staff.staff_id]
+  vehicle_registration_number varchar [ref: > vehicle.vehicle_registration_number]
+  repair_id int [ref: > repair.repair_id]
+  insurance_claim_id int
+  location varchar
+  comments varchar
+}
+
+Table insurance_claim{
+  insurance_claim_id int [pk]
+  client_id int [ref: > client.client_id]
+  insurance_account_id int [ref: > insurance_account.insurance_account_id]
+}
+
+Table insurance_account{
+  insurance_account_id int [pk]
+  client_id int [ref: - client.client_id]
+  premium float
+  deductible float 
+  // join with insurance claims to track insurance account with insurance claims
+}
+
+Table repair{
+  repair_id int [pk]
+  staff_id int [ref: > staff.staff_id]
+  client_id int [ref: > client.client_id]
+  hire_agreement_id int [ref: > hire_agreement.hire_agreement_id]
+  vehicle_registration_number varchar [ref: > vehicle.vehicle_registration_number]
+  fault_report_id int [ref: > fault_report.fault_report_id]
+  comments varchar
+  amount float
+  insurance_claim_id int [ref: - insurance_claim.insurance_claim_id]
+}
+
+Table maintenance{
+  maintenance_id int [pk]
+  staff_id int [ref: > staff.staff_id]
+  client int [ref: > client.client_id]
+  vehicle_registration_number varchar [ref: > vehicle.vehicle_registration_number]
+  comments varchar
+  amount float //never in debt
+}
